@@ -1,5 +1,4 @@
 import React, { useMemo, useState, useEffect } from 'react'
-import SEO from "../components/SEO";
 import SEO from '../components/SEO'   // 🆕 SEO komponens
 
 export default function Home() {
@@ -24,6 +23,12 @@ const og = `${url}og.jpg`;
   const countdown = formatDuration(diff)
 
   return (
+ <SEO
+  title="Ephemeral Moments"
+  description="Digitális fotóművészet – limitált kiadások, jótékonysági NFT projekt."
+  url={url}
+  image={og}
+/>
     <div className="min-h-screen bg-black text-white">
       {/* 🆕 SEO blokk – legyen az első gyermek */}
       <SEO
