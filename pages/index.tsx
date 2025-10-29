@@ -3,6 +3,8 @@ import SEO from "../components/SEO";
 import SEO from '../components/SEO'   // 🆕 SEO komponens
 
 export default function Home() {
+const url = "https://ephemeralmoments.org/";
+const og = `${url}og.jpg`;
   // TEMP countdown (később betesszük a pontos mint időzítést)
   const MINT_DATE = useMemo(() => new Date(Date.now() + 1000 * 60 * 60 * 24 * 14), [])
   const DONATION_POLICY = 'Save the Children UK — monthly transfer (10% of primary sales)'
