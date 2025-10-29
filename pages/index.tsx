@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react'
+import SEO from "../components/SEO";
 import SEO from '../components/SEO'   // 🆕 SEO komponens
 
 export default function Home() {
