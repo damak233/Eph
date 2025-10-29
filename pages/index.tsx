@@ -3,6 +3,7 @@ import SEO from '../components/SEO'
 
 // ---- Site/SEO alapok ----
 const URL = 'https://ephemeralmoments.org/'
+console.log("Deployed: " + new Date().toISOString())
 const OG  = `${URL}og.jpg`
 
 // ---- Supply config ----
