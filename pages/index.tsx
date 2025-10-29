@@ -373,8 +373,22 @@ function Footer({ twitter, discord, magicEden, tensor }:{ twitter: string, disco
 }
 
 function PreviewArtwork() {
-  const [expired, setExpired] = useState(false)
-  useEffect(() => { const t = setTimeout(() => setExpired(true), 5000); return () => clearTimeout(t) }, [])
+  const [expired, setExpired] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setExpired(true), 5000);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <div className="w-full h-full relative overflow-hidden">
-      <div className={`absolute inset-0 transition-opacity duration-700 ${expired ? 'opacity-0' 
+      <div
+        className={`absolute inset-0 transition-opacity duration-700 ${
+          expired ? 'opacity-0' : 'opacity-100'
+        }`}
+      >
+        {/* ide jöhetne egy kép vagy animáció */}
+      </div>
+    </div>
+  );
+}
