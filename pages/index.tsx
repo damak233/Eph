@@ -12,10 +12,6 @@ const og = `${url}og.jpg`;
   const MAGIC_EDEN = '#'
   const TENSOR = '#'
 
-  // 🆕 SEO-hoz használt URL/OG kép
-  const URL = 'https://ephemeralmoments.org/'
-  const OG = `${URL}og.jpg`
-
   const [now, setNow] = useState(Date.now())
   const [wlOpen, setWlOpen] = useState(true)
   useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t) }, [])
