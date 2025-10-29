@@ -1,5 +1,8 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import SEO from '../components/SEO'
+function numberFmt(num: number) {
+  return num.toLocaleString('en-US');
+}
 function formatDuration(ms: number) {
   const totalSeconds = Math.floor(ms / 1000);
   const hours = Math.floor(totalSeconds / 3600);
