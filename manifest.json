@@ -1,0 +1,21 @@
+{
+  "name": "Ephemeral Moments",
+  "short_name": "EphemeralMoments",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ffffff",
+  "description": "10,100 NFT: 10,000 Ephemeral + 100 Eternal (Save the Children). 1 Founder NFT reserved.",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/og.jpg",
+      "sizes": "1200x628",
+      "type": "image/jpeg"
+    }
+  ]
+}
