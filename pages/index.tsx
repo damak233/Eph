@@ -159,30 +159,24 @@ function Header() {
   );
 }
 
-// ---- Hero (háttér: /public/images/Hero.webp) ----
-function Hero({ countdown, twitter }: { countdown: string; twitter?: string }) {
-  const twitterUrl = twitter ?? "https://x.com/EphemeralArtCo";
-
+// ---- Hero (Hero.webp a háttér) --------------------------------------------
+function Hero({ countdown, twitter }: { countdown: string; twitter: string }) {
   return (
     <section
       id="home"
       className="relative overflow-hidden min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)]"
     >
-      {/* Háttérkép */}
+      {/* Háttérkép – pontos fájlnév! */}
       <div className="absolute inset-0 -z-10">
         <img
-          src="/images/Hero.webp"
+          src="/images/Hero.webp" // NAGY H – pontosan egyezzen a fájlnévvel
           alt="Ephemeral Moments — hero background"
-          className="
-            w-full h-full object-cover
-            object-[center_60%]
-            md:object-[center_84%]
-            lg:object-[center_92%]
-          "
+          className="w-full h-full object-cover object-[center_60%] md:object-[center_84%] lg:object-[center_92%]"
           decoding="async"
           loading="eager"
           fetchPriority="high"
         />
+        {/* Finom sötétítés, hogy a szöveg olvasható legyen */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
       </div>
 
@@ -191,43 +185,25 @@ function Hero({ countdown, twitter }: { countdown: string; twitter?: string }) {
         <p className="uppercase tracking-[0.25em] text-[11px] md:text-xs text-white/70">
           Solana • Art • Charity
         </p>
-
         <h1 className="mt-4 text-3xl md:text-5xl lg:text-6xl font-semibold leading-tight">
-          The art of{" "}
-          <span className="underline decoration-white/30 underline-offset-8">
-            fading
-          </span>
-          ,<br />
+          The art of <span className="underline decoration-white/30 underline-offset-8">fading</span>,<br />
           the beauty of what remains.
         </h1>
-
         <p className="mt-6 max-w-2xl text-white/80">
-          Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a
-          single white quote as a memory. 10,100 pieces;{" "}
-          <em>100 Eternal</em> remain visible forever (with a discreet Save the
-          Children logo). 1 Eternal reserved as the Founder NFT.
+          Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a single white quote as a memory.
+          10,100 pieces; <em>100 Eternal</em> remain visible forever (with a discreet Save the Children logo).
+          1 Eternal reserved as the Founder NFT.
         </p>
-
         <div className="mt-8 flex flex-col sm:flex-row gap-3">
-          <a
-            href="#mint"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition"
-          >
+          <a href="#mint" className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition">
             Mint – coming soon
           </a>
-          <a
-            href={twitterUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40 text-white"
-          >
+          <a href={twitter} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40">
             Follow on X
           </a>
         </div>
-
         <div className="mt-6 text-sm text-white/70">
-          Countdown to mint:{" "}
-          <span className="font-mono text-white">{countdown}</span>
+          Countdown to mint: <span className="font-mono text-white">{countdown}</span>
         </div>
       </div>
     </section>
