@@ -160,23 +160,24 @@ function Header() {
 }
 
 // ---- Hero (Hero.webp a háttér) --------------------------------------------
-function Hero({ countdown, twitter }: { countdown: string; twitter: string }) {
+function Hero({ countdown }: { countdown: string }) {
+  const twitter = "https://x.com/EphemeralArtCo"; // fix Twitter link
+
   return (
     <section
       id="home"
       className="relative overflow-hidden min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)]"
     >
-      {/* Háttérkép – pontos fájlnév! */}
+      {/* Háttérkép */}
       <div className="absolute inset-0 -z-10">
         <img
-          src="/images/Hero.webp" // NAGY H – pontosan egyezzen a fájlnévvel
+          src="/images/Hero.webp" // FONTOS: nagy H, pontosan így!
           alt="Ephemeral Moments — hero background"
           className="w-full h-full object-cover object-[center_60%] md:object-[center_84%] lg:object-[center_92%]"
           decoding="async"
           loading="eager"
           fetchPriority="high"
         />
-        {/* Finom sötétítés, hogy a szöveg olvasható legyen */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
       </div>
 
@@ -195,20 +196,32 @@ function Hero({ countdown, twitter }: { countdown: string; twitter: string }) {
           1 Eternal reserved as the Founder NFT.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row gap-3">
-          <a href="#mint" className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition">
+          <a
+            href="#mint"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition"
+          >
             Mint – coming soon
           </a>
-          <a href={twitter} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40">
+          <a
+            href={twitter}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40"
+          >
             Follow on X
           </a>
         </div>
         <div className="mt-6 text-sm text-white/70">
-          Countdown to mint: <span className="font-mono text-white">{countdown}</span>
+          Countdown to mint:{" "}
+          <span className="font-mono text-white">{countdown}</span>
         </div>
       </div>
     </section>
   );
 }
+
+export default Hero;
+
 
 
 
