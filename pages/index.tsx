@@ -159,48 +159,53 @@ function Header() {
   );
 }
 
-// ---- Hero (Hero.webp a háttér) -----------------------------
-function Hero({ countdown, twitter }: { countdown: string; twitter: string }) {
+// ---- Hero (Hero.webp a háttér) ------------------------------------------
+type HeroProps = { countdown: string; twitter: string };
+
+function Hero({ countdown, twitter }: HeroProps) {
   return (
-    <section id="home" className="relative overflow-hidden">
-      {/* Háttérkép – desktopon lejjebb fókuszálunk */}
+    <section
+      id="home"
+      className="
+        relative overflow-hidden
+        min-h-[calc(100vh-64px)]   /* desktopon látszódjon az alsó rész is */
+        md:min-h-[calc(100vh-72px)]
+      "
+    >
+      {/* Háttérkép — desktopon lejjebb fókuszálunk, hogy a gyerekek látszódjanak */}
       <div className="absolute inset-0 -z-10">
         <img
           src="/images/Hero.webp"
-          alt="Ephemeral Moments Hero"
+          alt="Ephemeral Moments – hero"
           className="
             w-full h-full object-cover
-            object-[center_65%]
-            md:object-[center_88%]   /* desktop fókusz lejjebb */
-            lg:object-[center_92%]   /* nagy kijelzőn még lejjebb */
+            object-[center_60%]    /* alap fókusz */
+            md:object-[center_83%] /* laptop/desktop: még lejjebb */
+            lg:object-[center_92%] /* nagy kijelző: még lejjebb */
           "
           decoding="async"
           loading="eager"
+          fetchPriority="high"
         />
+        {/* finom sötétítés a szöveg olvashatóságáért */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
       </div>
 
-      {/* Finom sötétítés alul, hogy a szöveg jól olvasható legyen */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent -z-0" />
-
-      <div className="max-w-7xl mx-auto px-4 py-20 md:py-28">
-        <p className="uppercase tracking-[0.2em] text-xs text-white/70">
+      {/* Tartalom */}
+      <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
+        <p className="uppercase tracking-[0.25em] text-[11px] md:text-xs text-white/70">
           Solana • Art • Charity
         </p>
 
-        <h1 className="mt-5 text-4xl md:text-6xl font-semibold leading-tight">
-          The art of{" "}
-          <span className="underline decoration-white/30 underline-offset-8">
-            fading
-          </span>
-          ,<br />
+        <h1 className="mt-4 text-3xl md:text-5xl lg:text-6xl font-semibold leading-tight text-white">
+          The art of <span className="underline decoration-white/30 underline-offset-8">fading</span>,<br />
           the beauty of what remains.
         </h1>
 
-        <p className="mt-6 text-white/80 max-w-2xl">
-          Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a
-          single white quote as a memory. 10,100 pieces; 100{" "}
-          <em>Eternal</em> remain visible forever (with a discreet Save the
-          Children logo). 1 Eternal reserved as the Founder NFT.
+        <p className="mt-6 max-w-2xl text-white/80">
+          Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a single white quote as a
+          memory. 10,100 pieces; <em>100 Eternal</em> remain visible forever (with a discreet Save the Children logo).
+          1 Eternal reserved as the Founder NFT.
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -214,20 +219,20 @@ function Hero({ countdown, twitter }: { countdown: string; twitter: string }) {
             href={twitter}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40 transition"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40 text-white"
           >
             Follow on X
           </a>
         </div>
 
-        <div className="mt-8 text-sm text-white/70">
-          Countdown to mint:{" "}
-          <span className="font-mono text-white">{countdown}</span>
+        <div className="mt-6 text-sm text-white/70">
+          Countdown to mint: <span className="font-mono text-white">{countdown}</span>
         </div>
       </div>
     </section>
   );
 }
+
 
 
 // ---- Concept ------------------------------------------------
