@@ -1,9 +1,21 @@
 {
   "headers": [
     {
+      "source": "/(.*)\\.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml"
+        }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+        {
+          "key": "X-Robots-Tag",
+          "value": "index, follow"
+        }
       ]
     }
   ]
