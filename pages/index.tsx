@@ -162,8 +162,8 @@ function Header() {
 // ---- Hero (Hero.webp a háttér) ------------------------------------------
 type HeroProps = { countdown: string; twitter?: string };
 
-function Hero({ countdown, twitter }: HeroProps) {
-  const twitterUrl = twitter ?? 'https://x.com/EphemeralArtCo';
+export default function Hero({ countdown, twitter }: HeroProps) {
+  const twitterUrl = twitter ?? "https://x.com/EphemeralArtCo";
 
   return (
     <section
@@ -174,39 +174,50 @@ function Hero({ countdown, twitter }: HeroProps) {
         md:min-h-[calc(100vh-72px)]
       "
     >
-      {/* Háttérkép – desktopon lejjebb fókusz (hogy a gyerekek látszódjanak) */}
+      {/* Háttérkép + fókusz lefelé desktopon */}
       <div className="absolute inset-0 -z-10">
-        <img
-          src="/images/Hero.webp"
-          alt="Ephemeral Moments – hero"
-          className="
-            w-full h-full object-cover
-            object-[center_60%]
-            md:object-[center_83%]
-            lg:object-[center_92%]
-          "
-          decoding="async"
-          loading="eager"
-          fetchPriority="high"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
+        <picture>
+          <source srcSet="/images/Hero.webp" type="image/webp" />
+          <source srcSet="/images/hero.webp" type="image/webp" />
+          <source srcSet="/images/hero.jpg" type="image/jpeg" />
+          <source srcSet="/images/hero.png" type="image/png" />
+          <img
+            src="/images/Hero.webp"
+            alt="Ephemeral Moments – hero"
+            className="
+              w-full h-full object-cover
+              object-[center_60%]
+              md:object-[center_83%]
+              lg:object-[center_92%]
+            "
+            decoding="async"
+            loading="eager"
+            fetchPriority="high"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
+        </picture>
       </div>
 
       {/* Tartalom */}
-      <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 text-white">
         <p className="uppercase tracking-[0.25em] text-[11px] md:text-xs text-white/70">
           Solana • Art • Charity
         </p>
 
-        <h1 className="mt-4 text-3xl md:text-5xl lg:text-6xl font-semibold leading-tight text-white">
-          The art of <span className="underline decoration-white/30 underline-offset-8">fading</span>,<br />
+        <h1 className="mt-4 text-3xl md:text-5xl lg:text-6xl font-semibold leading-tight">
+          The art of{" "}
+          <span className="underline decoration-white/30 underline-offset-8">
+            fading
+          </span>
+          ,<br />
           the beauty of what remains.
         </h1>
 
         <p className="mt-6 max-w-2xl text-white/80">
-          Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a single white quote as a
-          memory. 10,100 pieces; <em>100 Eternal</em> remain visible forever (with a discreet Save the Children logo).
-          1 Eternal reserved as the Founder NFT.
+          Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a
+          single white quote as a memory. 10,100 pieces;{" "}
+          <em>100 Eternal</em> remain visible forever (with a discreet Save the
+          Children logo). 1 Eternal reserved as the Founder NFT.
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -227,7 +238,8 @@ function Hero({ countdown, twitter }: HeroProps) {
         </div>
 
         <div className="mt-6 text-sm text-white/70">
-          Countdown to mint: <span className="font-mono text-white">{countdown}</span>
+          Countdown to mint:{" "}
+          <span className="font-mono text-white">{countdown}</span>
         </div>
       </div>
     </section>
