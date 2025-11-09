@@ -159,9 +159,9 @@ function Header() {
   );
 }
 
-// ---- Hero (Hero.webp a háttér) --------------------------------------------
+// ---- Hero (Hero.webp háttér) ----------------------------------------------
 function Hero({ countdown }: { countdown: string }) {
-  const twitter = "https://x.com/EphemeralArtCo"; // fix Twitter link
+  const twitter = "https://x.com/EphemeralArtCo";
 
   return (
     <section
@@ -171,7 +171,7 @@ function Hero({ countdown }: { countdown: string }) {
       {/* Háttérkép */}
       <div className="absolute inset-0 -z-10">
         <img
-          src="/images/Hero.webp" // FONTOS: nagy H, pontosan így!
+          src="/images/Hero.webp"  // pontos útvonal, nagy H!
           alt="Ephemeral Moments — hero background"
           className="w-full h-full object-cover object-[center_60%] md:object-[center_84%] lg:object-[center_92%]"
           decoding="async"
@@ -196,32 +196,20 @@ function Hero({ countdown }: { countdown: string }) {
           1 Eternal reserved as the Founder NFT.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row gap-3">
-          <a
-            href="#mint"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition"
-          >
+          <a href="#mint" className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition">
             Mint – coming soon
           </a>
-          <a
-            href={twitter}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40"
-          >
+          <a href={twitter} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40">
             Follow on X
           </a>
         </div>
         <div className="mt-6 text-sm text-white/70">
-          Countdown to mint:{" "}
-          <span className="font-mono text-white">{countdown}</span>
+          Countdown to mint: <span className="font-mono text-white">{countdown}</span>
         </div>
       </div>
     </section>
   );
 }
-
-export default Hero;
-
 
 
 
