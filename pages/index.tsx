@@ -161,33 +161,62 @@ function Header() {
 
 // ---- Hero (Hero.webp a háttér) -----------------------------
 function Hero({ countdown }: { countdown: string }) {
-  return (
-    <section id="home" className="relative w-full h-[90vh]">
-      {/* Background image */}
-      <Image
-        src="/images/Hero.webp"
-        alt="Ephemeral Moments — Hero"
-        fill
-        priority
-        sizes="100vw"
-        style={{ objectFit: "cover", objectPosition: "center" }}
-      />
+  const [offsetY, setOffsetY] = useState(0);
 
-      {/* Overlay + text */}
-      <div className="absolute inset-0 bg-black/55 flex flex-col items-center justify-center text-center px-4">
+  useEffect(() => {
+    const handleScroll = () => setOffsetY(window.scrollY * 0.3);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <section
+      id="home"
+      className="relative w-full h-[75vh] md:h-[92vh] overflow-hidden"
+    >
+      {/* Background image — fókusz mobilon középen, desktopon lent */}
+      <div
+        className="absolute inset-0 will-change-transform"
+        style={{
+          transform: `translateY(${offsetY * 0.2}px)`,
+        }}
+      >
+        <Image
+          src="/images/Hero.webp"
+          alt="Ephemeral Moments — Hero"
+          fill
+          priority
+          sizes="100vw"
+          style={{
+            objectFit: "cover",
+            objectPosition:
+              typeof window !== "undefined" && window.innerWidth > 768
+                ? "center 90%" // desktopon lentebb fókuszál
+                : "center", // mobilon középen
+          }}
+        />
+      </div>
+
+      {/* Sötét overlay a szöveg olvashatóságáért */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-transparent" />
+
+      {/* Tartalom */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
         <p className="uppercase tracking-[0.2em] text-xs text-white/70">
           Solana • Art • Charity
         </p>
+
         <h1 className="mt-4 text-4xl md:text-6xl font-semibold leading-tight">
-          The art of <span className="underline underline-offset-8">fading</span>
-          ,<br /> the beauty of what remains.
+          The art of{" "}
+          <span className="underline underline-offset-8">fading</span>,
+          <br /> the beauty of what remains.
         </h1>
+
         <p className="mt-6 text-white/85 max-w-2xl">
           Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a
-          single white quote as a memory. {numberFmt(SUPPLY_TOTAL)} pieces;{" "}
-          {SUPPLY_ETERNAL} <em>Eternal</em> remain visible forever (with a
-          discreet Save the Children logo). {FOUNDER_RESERVED} Eternal reserved
-          as the Founder NFT.
+          single white quote as a memory. 10,100 pieces; 100{" "}
+          <em>Eternal</em> remain visible forever (with a discreet Save the
+          Children logo). 1 Eternal reserved as the Founder NFT.
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -215,6 +244,7 @@ function Hero({ countdown }: { countdown: string }) {
     </section>
   );
 }
+
 
 // ---- Concept ------------------------------------------------
 function Concept() {
