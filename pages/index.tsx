@@ -159,30 +159,32 @@ function Header() {
   );
 }
 
-// ---- Hero (Hero.webp háttér) ----------------------------------------------
+// ---- Hero (stabil, cache-bust + abszolút és relatív fallback) -------------
 function Hero({ countdown }: { countdown: string }) {
-  const twitter = "https://x.com/EphemeralArtCo";
+  // 1) A domained
+  const ORIGIN = "https://ephemeralmoments.org";
+  // 2) Cache-bust query, hogy a CDN ne a régi képet adja
+  const BUST = "?v=2";
+  // 3) Útvonalak (nagy H betű!)
+  const REL = "/images/Hero.webp" + BUST;
+  const ABS = ORIGIN + "/images/Hero.webp" + BUST;
 
   return (
     <section
       id="home"
       className="relative overflow-hidden min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)]"
+      // háttérképet in-line adjuk, ez ritkán hibázik
+      style={{
+        backgroundImage: `url(${REL}), url(${ABS})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center 84%", // desktopon lejjebb fókusz
+        backgroundRepeat: "no-repeat",
+      }}
     >
-      {/* Háttérkép */}
-      <div className="absolute inset-0 -z-10">
-        <img
-          src="/images/Hero.webp"  // pontos útvonal, nagy H!
-          alt="Ephemeral Moments — hero background"
-          className="w-full h-full object-cover object-[center_60%] md:object-[center_84%] lg:object-[center_92%]"
-          decoding="async"
-          loading="eager"
-          fetchPriority="high"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
-      </div>
+      {/* Extra biztos ami biztos: gradient, de áttetsző */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50 pointer-events-none" />
 
-      {/* Tartalom */}
-      <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 text-white">
+      <div className="relative max-w-7xl mx-auto px-4 py-16 md:py-24 text-white">
         <p className="uppercase tracking-[0.25em] text-[11px] md:text-xs text-white/70">
           Solana • Art • Charity
         </p>
@@ -195,14 +197,24 @@ function Hero({ countdown }: { countdown: string }) {
           10,100 pieces; <em>100 Eternal</em> remain visible forever (with a discreet Save the Children logo).
           1 Eternal reserved as the Founder NFT.
         </p>
+
         <div className="mt-8 flex flex-col sm:flex-row gap-3">
-          <a href="#mint" className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition">
+          <a
+            href="#mint"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition"
+          >
             Mint – coming soon
           </a>
-          <a href={twitter} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40">
+          <a
+            href="https://x.com/EphemeralArtCo"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40"
+          >
             Follow on X
           </a>
         </div>
+
         <div className="mt-6 text-sm text-white/70">
           Countdown to mint: <span className="font-mono text-white">{countdown}</span>
         </div>
@@ -210,6 +222,7 @@ function Hero({ countdown }: { countdown: string }) {
     </section>
   );
 }
+
 
 
 
