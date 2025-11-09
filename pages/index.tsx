@@ -160,34 +160,35 @@ function Header() {
 }
 
 // ---- Hero (Hero.webp a háttér) ------------------------------------------
-type HeroProps = { countdown: string; twitter: string };
+type HeroProps = { countdown: string; twitter?: string };
 
 function Hero({ countdown, twitter }: HeroProps) {
+  const twitterUrl = twitter ?? 'https://x.com/EphemeralArtCo';
+
   return (
     <section
       id="home"
       className="
         relative overflow-hidden
-        min-h-[calc(100vh-64px)]   /* desktopon látszódjon az alsó rész is */
+        min-h-[calc(100vh-64px)]
         md:min-h-[calc(100vh-72px)]
       "
     >
-      {/* Háttérkép — desktopon lejjebb fókuszálunk, hogy a gyerekek látszódjanak */}
+      {/* Háttérkép – desktopon lejjebb fókusz (hogy a gyerekek látszódjanak) */}
       <div className="absolute inset-0 -z-10">
         <img
           src="/images/Hero.webp"
           alt="Ephemeral Moments – hero"
           className="
             w-full h-full object-cover
-            object-[center_60%]    /* alap fókusz */
-            md:object-[center_83%] /* laptop/desktop: még lejjebb */
-            lg:object-[center_92%] /* nagy kijelző: még lejjebb */
+            object-[center_60%]
+            md:object-[center_83%]
+            lg:object-[center_92%]
           "
           decoding="async"
           loading="eager"
           fetchPriority="high"
         />
-        {/* finom sötétítés a szöveg olvashatóságáért */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
       </div>
 
@@ -216,7 +217,7 @@ function Hero({ countdown, twitter }: HeroProps) {
             Mint – coming soon
           </a>
           <a
-            href={twitter}
+            href={twitterUrl}
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40 text-white"
@@ -232,7 +233,6 @@ function Hero({ countdown, twitter }: HeroProps) {
     </section>
   );
 }
-
 
 
 // ---- Concept ------------------------------------------------
