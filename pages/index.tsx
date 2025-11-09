@@ -160,28 +160,31 @@ function Header() {
 }
 
 // ---- Hero (háttér: /public/images/Hero.webp) ----
-function Hero({ countdown, twitter }: { countdown: string; twitter: string }) {
+function Hero({ countdown, twitter }: { countdown: string; twitter?: string }) {
+  const twitterUrl = twitter ?? "https://x.com/EphemeralArtCo";
+
   return (
     <section
       id="home"
       className="relative overflow-hidden min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)]"
     >
       {/* Háttérkép */}
-      <img
-        src="/images/Hero.webp"
-        alt="Ephemeral Moments — hero"
-        className="
-          absolute inset-0 -z-10 w-full h-full object-cover
-          object-[center_60%]     /* alap: fentebb fókusz */
-          md:object-[center_84%]  /* desktop: lejjebb fókusz */
-          lg:object-[center_92%]  /* nagy kijelző: még lejjebb */
-        "
-        decoding="async"
-        loading="eager"
-        fetchPriority="high"
-      />
-      {/* Finom sötétítés, hogy a szöveg olvasható legyen */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
+      <div className="absolute inset-0 -z-10">
+        <img
+          src="/images/Hero.webp"
+          alt="Ephemeral Moments — hero background"
+          className="
+            w-full h-full object-cover
+            object-[center_60%]
+            md:object-[center_84%]
+            lg:object-[center_92%]
+          "
+          decoding="async"
+          loading="eager"
+          fetchPriority="high"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
+      </div>
 
       {/* Tartalom */}
       <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 text-white">
@@ -213,7 +216,7 @@ function Hero({ countdown, twitter }: { countdown: string; twitter: string }) {
             Mint – coming soon
           </a>
           <a
-            href={twitter}
+            href={twitterUrl}
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40 text-white"
@@ -230,6 +233,7 @@ function Hero({ countdown, twitter }: { countdown: string; twitter: string }) {
     </section>
   );
 }
+
 
 
 // ---- Concept ------------------------------------------------
