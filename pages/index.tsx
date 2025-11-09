@@ -160,91 +160,58 @@ function Header() {
 }
 
 // ---- Hero (Hero.webp a háttér) -----------------------------
-function Hero({ countdown }: { countdown: string }) {
-  const [offsetY, setOffsetY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => setOffsetY(window.scrollY * 0.3);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+function Hero({ countdown, twitter }: { countdown: string; twitter: string }) {
   return (
-    <section
-      id="home"
-      className="relative w-full h-[75vh] md:h-[92vh] overflow-hidden"
-    >
-      {/* Background image — fókusz mobilon középen, desktopon lent */}
-      <div
-        className="absolute inset-0 will-change-transform"
-        style={{
-          transform: `translateY(${offsetY * 0.2}px)`,
-        }}
-      >
-        <Image
+    <section id="home" className="relative overflow-hidden">
+      {/* háttérkép – desktopon lejjebb fókuszálunk */}
+      <div className="absolute inset-0 -z-10">
+        <img
           src="/images/Hero.webp"
-          alt="Ephemeral Moments — Hero"
-          fill
-          priority
-          sizes="100vw"
-          style={{
-            objectFit: "cover",
-            objectPosition:
-              typeof window !== "undefined" && window.innerWidth > 768
-                ? "center 90%" // desktopon lentebb fókuszál
-                : "center", // mobilon középen
-          }}
+          alt=""
+          className="
+            w-full h-full object-cover
+            object-[center_65%]
+            md:object-[center_88%]   /* <<< desktop fókusz lejjebb */
+            lg:object-[center_92%]   /* <<< nagy kijelzőn még lejjebb */
+          "
+          decoding="async"
+          loading="eager"
         />
       </div>
 
-      {/* Sötét overlay a szöveg olvashatóságáért */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-transparent" />
+      {/* finom sötétítés alul, hogy a szöveg jól olvasható legyen */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent -z-0" />
 
-      {/* Tartalom */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-        <p className="uppercase tracking-[0.2em] text-xs text-white/70">
-          Solana • Art • Charity
+      <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
+        <p className="tracking-[0.35em] text-[11px] text-white/70">
+          SOLANA • ART • CHARITY
         </p>
 
-        <h1 className="mt-4 text-4xl md:text-6xl font-semibold leading-tight">
-          The art of{" "}
-          <span className="underline underline-offset-8">fading</span>,
-          <br /> the beauty of what remains.
+        <h1 className="mt-5 text-4xl md:text-6xl font-semibold leading-tight">
+          The art of <span className="underline decoration-white/30 underline-offset-8">fading</span>,<br />
+          the beauty of what remains.
         </h1>
 
-        <p className="mt-6 text-white/85 max-w-2xl">
-          Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a
-          single white quote as a memory. 10,100 pieces; 100{" "}
-          <em>Eternal</em> remain visible forever (with a discreet Save the
-          Children logo). 1 Eternal reserved as the Founder NFT.
+        <p className="mt-6 max-w-2xl text-white/80">
+          Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a single white quote as a memory. 10,100 pieces; 100 <em>Eternal</em> remain visible forever (with a discreet Save the Children logo). 1 Eternal reserved as the Founder NFT.
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-3">
-          <a
-            href="#mint"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition"
-          >
+          <a href="#mint" className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition">
             Mint – coming soon
           </a>
-          <a
-            href="https://x.com/EphemeralArtCo"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40 transition"
-          >
+          <a href={twitter} target="_blank" className="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 hover:border-white/40 transition">
             Follow on X
           </a>
         </div>
 
-        <div className="mt-6 text-sm text-white/80">
-          Countdown to mint:{" "}
-          <span className="font-mono text-white">{countdown}</span>
+        <div className="mt-6 text-sm text-white/70">
+          Countdown to mint: <span className="font-mono text-white">{countdown}</span>
         </div>
       </div>
     </section>
   );
 }
-
 
 // ---- Concept ------------------------------------------------
 function Concept() {
