@@ -1,35 +1,44 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { createClient } from '@supabase/supabase-js';
+// /pages/api/wl.ts
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { supabase } from '@/lib/supabaseClient'
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-const supabase = createClient(url, anon);
+type ReqBody = { email?: string; wallet?: string }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.setHeader('Content-Type', 'application/json');
-
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ ok: false, error: 'Method Not Allowed' })
   }
 
   try {
-    const { email, wallet, source } = req.body ?? {};
+    const { email, wallet } = (req.body || {}) as ReqBody
 
     if (!email || !wallet) {
-      return res.status(400).json({ error: 'Missing email or wallet' });
+      return res.status(400).json({ ok: false, error: 'Missing email or wallet' })
     }
 
-    const { error } = await supabase
+    // minimális formátumellenőrzés
+    const w = String(wallet).trim()
+    if (w.length < 32 || w.length > 44) {
+      return res.status(400).json({ ok: false, error: 'Invalid wallet format' })
+    }
+
+    // beszúrás RLS-sel (role: anon)
+    const { data, error } = await supabase
       .from('whitelist')
-      .insert({ email, wallet, source: source ?? 'site', status: 'pending' });
+      .insert([{ email, wallet: w }])
+      .select('id,status,created_at')
+      .single()
 
     if (error) {
-      return res.status(400).json({ error: error.message });
+      // Részletes log a Vercelben
+      console.error('WL_INSERT_ERR', { code: error.code, message: error.message, details: error.details })
+      return res.status(500).json({ ok: false, error: error.message || 'Insert failed' })
     }
 
-    return res.status(200).json({ message: 'OK' });
+    return res.status(200).json({ ok: true, data })
   } catch (e: any) {
-    return res.status(500).json({ error: e?.message ?? 'Server error' });
+    console.error('WL_API_FATAL', { message: e?.message })
+    // Ha itt “Invalid API key” jön, azt így is JSON-ként kapja meg a frontend
+    return res.status(500).json({ ok: false, error: e?.message || 'Unexpected error' })
   }
 }
