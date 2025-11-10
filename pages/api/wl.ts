@@ -1,50 +1,55 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { supabase } from '../../lib/supabaseClient'
+import { createClient } from '@supabase/supabase-js'
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const WALLET_RE = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY! // FONTOS: ez a service role kulcs
+)
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
+  if (req.method !== 'POST')
+    return res.status(405).json({ error: 'Method not allowed' })
 
-  const { email, wallet } = (req.body ?? {}) as { email?: string; wallet?: string }
+  try {
+    const { email, wallet } = req.body
 
-  const ip = (req.headers['x-forwarded-for'] as string || req.socket.remoteAddress || '')
-    .split(',')[0]
-    .trim()
-  const ua = String(req.headers['user-agent'] || '')
+    if (!email)
+      return res.status(400).json({ error: 'Email is required' })
 
-  if (!EMAIL_RE.test(String(email || ''))) {
-    return res.status(400).json({ error: 'Invalid email' })
-  }
-  if (wallet && !WALLET_RE.test(String(wallet))) {
-    return res.status(400).json({ error: 'Invalid Solana address' })
-  }
+    // Solana-cím formátumellenőrzés
+    if (wallet && !/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(wallet))
+      return res.status(400).json({ error: 'Invalid Solana address' })
 
-  const since = new Date(Date.now() - 5 * 60 * 1000).toISOString()
-  const { data: recent } = await supabase
-    .from('whitelist')
-    .select('id')
-    .eq('ip', ip)
-    .gte('created_at', since)
+    // Metaadatok (IP, user agent)
+    const ip =
+      req.headers['x-forwarded-for']?.toString().split(',')[0] ||
+      req.socket.remoteAddress ||
+      null
+    const ua = req.headers['user-agent'] || null
 
-  if ((recent?.length ?? 0) > 3) {
-    return res.status(429).json({ error: 'Too many attempts, try again later' })
-  }
+    // ✅ csak beszúrunk, NINCS .select() (különben az RLS megfogja)
+    const { error } = await supabase
+      .from('whitelist')
+      .insert([
+        {
+          email: String(email).toLowerCase(),
+          wallet: wallet || null,
+          ip,
+          ua,
+          source: 'site',
+          status: 'pending', // trigger úgyis frissíti ha WL hely még van
+        },
+      ])
 
-  const { data, error } = await supabase
-    .from('whitelist')
-    .insert([{ email: String(email).toLowerCase(), wallet: wallet || null, ip, ua, source: 'site' }])
-    .select('status')
-    .single()
-
-  if (error) {
-    if ((error as any).code === '23505') {
-      return res.status(409).json({ error: 'This email is already registered' })
+    if (error) {
+      console.error('Supabase insert error:', error)
+      return res.status(500).json({ error: 'Database error' })
     }
-    console.error(error)
-    return res.status(500).json({ error: 'Database error' })
-  }
 
-  return res.status(200).json({ ok: true, status: data?.status })
+    // ✅ siker
+    return res.status(200).json({ ok: true })
+  } catch (err: any) {
+    console.error('Unexpected error:', err)
+    return res.status(500).json({ error: 'Unexpected server error' })
+  }
 }
