@@ -8,8 +8,6 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
 
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL
     const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-    // 🔧 itt pótoljuk a hibásan hiányzó változót
     const url_ref = url?.split('//')[1]?.split('.')[0]
 
     const check = {
@@ -23,7 +21,7 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
       tip: 'Ha refs_match === false, akkor az URL és az ANON kulcs nem ugyanahhoz a projekthez tartozik.'
     }
 
-    // Próbáljunk lekérdezni a whitelist táblából
+    // teszt lekérdezés
     const { data, error } = await supabase.from('whitelist').select('*').limit(1)
 
     if (error) {
