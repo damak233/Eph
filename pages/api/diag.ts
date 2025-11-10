@@ -9,11 +9,14 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL
     const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
+    // 🔧 itt pótoljuk a hibásan hiányzó változót
+    const url_ref = url?.split('//')[1]?.split('.')[0]
+
     const check = {
       ok: true,
       stage: 'env-check',
       url,
-      url_ref: url?.split('//')[1]?.split('.')[0],
+      url_ref,
       anon_key_length: anon?.length,
       token_ref: anon?.split('.')[1]?.substring(0, 10),
       refs_match: url?.includes(url_ref || '') ? true : null,
