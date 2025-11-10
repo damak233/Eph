@@ -1,49 +1,113 @@
 // /pages/api/diag.ts
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSupabase } from '../../lib/supabaseClient'
+import { createClient } from '@supabase/supabase-js'
 
-export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
-  try {
-    const supabase = getSupabase()
+type Diag = {
+  ok: boolean
+  stage: 'env' | 'supabase-select' | 'raw'
+  url: string | null
+  keyKind: 'jwt-legacy' | 'sb-publishable' | 'unknown'
+  status?: number
+  statusText?: string
+  body?: any
+  tip?: string
+  note?: string
+}
 
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    const url_ref = url?.split('//')[1]?.split('.')[0]
+export default async function handler(
+  _req: NextApiRequest,
+  res: NextApiResponse<Diag>
+) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? null
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? null
 
-    const check = {
-      ok: true,
-      stage: 'env-check',
+  if (!url || !key) {
+    return res.status(200).json({
+      ok: false,
+      stage: 'env',
       url,
-      url_ref,
-      anon_key_length: anon?.length,
-      token_ref: anon?.split('.')[1]?.substring(0, 10),
-      refs_match: url?.includes(url_ref || '') ? true : null,
-      tip: 'Ha refs_match === false, akkor az URL és az ANON kulcs nem ugyanahhoz a projekthez tartozik.'
-    }
+      keyKind: 'unknown',
+      tip: 'Hiányzik a NEXT_PUBLIC_SUPABASE_URL vagy a NEXT_PUBLIC_SUPABASE_ANON_KEY a Vercel környezeti változók között.',
+      note:
+        'Project Settings → Environment Variables: mindkettő legyen beállítva Production/Preview/Development-ra, majd Redeploy.',
+    })
+  }
 
-    // teszt lekérdezés
-    const { data, error } = await supabase.from('whitelist').select('*').limit(1)
+  const keyKind = key.startsWith('sb_')
+    ? 'sb-publishable'
+    : key.split('.').length === 3
+    ? 'jwt-legacy'
+    : 'unknown'
+
+  // Valódi próbahívás: ha 401, akkor tényleg rossz a key vagy az URL.
+  try {
+    const client = createClient(url, key)
+    // egy publikus, RLS-sel védett tábla (pl. whitelist) próbálkozás READ-del
+    const { error } = await client.from('whitelist').select('*').limit(1)
 
     if (error) {
+      // a supabase-js errorból HTTP státuszt nem mindig kapunk vissza,
+      // ezért leküldünk egy nyers REST hívást is headerrel, hogy legyen biztos kód.
+      const r = await fetch(`${url}/rest/v1/whitelist?select=id&limit=1`, {
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+          Prefer: 'count=exact',
+        },
+      })
+
+      if (!r.ok) {
+        const body = await r.json().catch(() => null)
+        return res.status(200).json({
+          ok: false,
+          stage: 'raw',
+          url,
+          keyKind,
+          status: r.status,
+          statusText: r.statusText,
+          body,
+          tip:
+            r.status === 401
+              ? 'Unauthorized (401): Dupla-ellenőrzés: biztosan ehhez a projekthez tartozik az URL és a kulcs?'
+              : 'A REST hívás sem sikerült. Ellenőrizd az URL-t és a kulcsot.',
+          note:
+            "Ha új (sb_publishable_...) kulcsot használsz, az jó — csak az URL-nek is ugyanahhoz a projekthez kell tartoznia.",
+        })
+      }
+
+      // REST szerint oké, akkor a js-kliens hibája volt nem halálos
       return res.status(200).json({
-        ok: false,
-        stage: 'supabase-select',
-        message: error.message,
-        details: error.details ?? null
+        ok: true,
+        stage: 'raw',
+        url,
+        keyKind,
+        status: 200,
+        statusText: 'OK',
+        body: null,
+        tip: 'A REST próbahívás sikerült, az URL+KEY páros jó.',
+        note:
+          'Ha a frontend mégsem működik, akkor RLS/policy vagy API route kód gond lesz, nem a kulcs.',
       })
     }
 
+    // supabase-js select is oké
     return res.status(200).json({
       ok: true,
-      stage: 'done',
-      rows: data?.length ?? 0
+      stage: 'supabase-select',
+      url,
+      keyKind,
+      tip: 'Minden rendben az URL+KEY párossal.',
+      note:
+        'Ha a WL űrlap még hibázik, akkor az API route (/api/wl) vagy a táblapolicy lehet a ludas.',
     })
-  } catch (err: any) {
+  } catch (e: any) {
     return res.status(200).json({
       ok: false,
-      stage: 'exception',
-      message: err?.message ?? String(err),
-      details: null
+      stage: 'supabase-select',
+      url,
+      keyKind,
+      tip: 'Váratlan hiba a próbahívás közben.',
+      note: String(e?.message ?? e),
     })
   }
 }
