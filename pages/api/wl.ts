@@ -14,7 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     .trim()
   const ua = String(req.headers['user-agent'] || '')
 
-  // alap validáció
   if (!EMAIL_RE.test(String(email || ''))) {
     return res.status(400).json({ error: 'Invalid email' })
   }
@@ -22,7 +21,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Invalid Solana address' })
   }
 
-  // egyszerű throttling: ugyanarról az IP-ről 5 perc alatt max 3 próbálkozás
   const since = new Date(Date.now() - 5 * 60 * 1000).toISOString()
   const { data: recent } = await supabase
     .from('whitelist')
@@ -34,7 +32,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(429).json({ error: 'Too many attempts, try again later' })
   }
 
-  // beszúrás – a TRIGGER állítja a 'status'-t (wl / waitlist)
   const { data, error } = await supabase
     .from('whitelist')
     .insert([{ email: String(email).toLowerCase(), wallet: wallet || null, ip, ua, source: 'site' }])
@@ -42,7 +39,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     .single()
 
   if (error) {
-    // egyediség ütközés (email unique)
     if ((error as any).code === '23505') {
       return res.status(409).json({ error: 'This email is already registered' })
     }
