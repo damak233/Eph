@@ -1,6 +1,6 @@
 // /pages/api/diag-insert.ts
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSupabase } from '../../lib/supabaseClient'
+import { Supabase } from '../../lib/supabaseClient'
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   try {
