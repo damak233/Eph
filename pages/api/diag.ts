@@ -1,35 +1,28 @@
+// /pages/api/diag.ts
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { supabase } from '../../lib/supabaseClient'
+import { supabase } from '@/lib/supabaseClient'
 
-export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    // minimális lekérdezés a whitelist táblára — csak count kell
-    const { error, count } = await supabase
+    const { data, error, status } = await supabase
       .from('whitelist')
-      .select('*', { count: 'exact', head: true })
+      .select('id')
+      .limit(1)
 
     if (error) {
       return res.status(200).json({
         ok: false,
         stage: 'supabase-select',
-        code: (error as any).code,
         message: error.message,
-        details: (error as any).details ?? null,
+        details: error.details ?? null,
+        hint: (error as any).hint ?? null,
+        code: (error as any).code ?? null,
+        status,
       })
     }
 
-    return res.status(200).json({
-      ok: true,
-      message: 'Supabase key működik.',
-      count,
-      urlStartsWith: (process.env.NEXT_PUBLIC_SUPABASE_URL || '').slice(0, 40),
-      keyStartsWith: (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').slice(0, 16) + '…',
-    })
+    return res.status(200).json({ ok: true, count: data?.length ?? 0 })
   } catch (e: any) {
-    return res.status(200).json({
-      ok: false,
-      stage: 'fatal',
-      message: e?.message || String(e),
-    })
+    return res.status(200).json({ ok: false, stage: 'catch', message: e?.message || String(e) })
   }
 }
