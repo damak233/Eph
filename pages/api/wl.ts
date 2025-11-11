@@ -18,6 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .insert([{ email, wallet }])
 
     if (error) {
+      console.error('Supabase insert error:', error)
       return res.status(500).json({ ok: false, error: error.message })
     }
 
