@@ -1,33 +1,19 @@
 // /pages/api/wl.ts
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { supabase } from '../../lib/supabaseClient';
-
-type ReqBody = { email?: string; wallet?: string };
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { supabaseServer } from '../../lib/supabaseServer'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ ok: false, error: 'Method Not Allowed' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'Method Not Allowed' })
 
-  try {
-    const { email, wallet } = (req.body ?? {}) as ReqBody;
+  const { email, wallet, source } = req.body ?? {}
+  if (!email || !wallet) return res.status(400).json({ ok: false, error: 'Missing email or wallet' })
 
-    if (!email && !wallet) {
-      return res.status(400).json({ ok: false, error: 'Missing email or wallet' });
-    }
+  const { data, error } = await supabaseServer
+    .from('whitelist')
+    .insert({ email, wallet, source: source ?? 'api' })
+    .select('*')
+    .single()
 
-    const { data, error } = await supabase
-      .from('whitelist')
-      .insert({ email, wallet })
-      .select()
-      .single();
-
-    if (error) {
-      return res.status(400).json({ ok: false, stage: 'supabase-insert', error: error.message });
-    }
-
-    return res.status(200).json({ ok: true, data });
-  } catch (e: any) {
-    return res.status(500).json({ ok: false, error: e?.message ?? 'Server error' });
-  }
+  if (error) return res.status(400).json({ ok: false, error: error.message })
+  return res.status(200).json({ ok: true, entry: data })
 }
