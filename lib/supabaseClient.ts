@@ -1,9 +1,16 @@
-// /lib/supabaseServer.ts
+// lib/supabaseClient.ts
 import { createClient } from '@supabase/supabase-js'
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const serviceRole = process.env.SUPABASE_SERVICE_ROLE_KEY! // csak szerveren elérhető
+// ⛳️ Kötelezően legyenek ezek az ENV-ek Vercelben is:
+// NEXT_PUBLIC_SUPABASE_URL
+// NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-export const supabaseServer = createClient(url, serviceRole, {
-  auth: { persistSession: false }
-})
+const client = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
+
+// Mindkét néven exportálom, hogy akár régi import is működjön
+export const supabase = client
+export const supabaseClient = client
+export default client
