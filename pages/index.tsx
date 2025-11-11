@@ -273,24 +273,55 @@ function MintSection({
   const [loading, setLoading] = React.useState(false)
   const [msg, setMsg] = React.useState<string | null>(null)
 
+  /**
+   * Beküldés csak EGYSZER olvassa a választ.
+   * Ha az API JSON-t ad, json-ként olvassuk.
+   * Ha nem (pl. üres body/hard 500), akkor szövegként–>diagnosztika.
+   */
+  async function applyForWl(email: string, wallet: string) {
+    const res = await fetch('/api/wl', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, wallet }),
+    })
+
+    const contentType = res.headers.get('content-type') || ''
+    let payload: any = null
+
+    try {
+      if (contentType.includes('application/json')) {
+        payload = await res.json()               // <= CSAK EGYSZER!
+      } else {
+        const text = await res.text()            // nem JSON válasz
+        payload = { ok: res.ok, status: res.status, text }
+      }
+    } catch {
+      // pl. teljesen üres body esetén
+      payload = { ok: res.ok, status: res.status, text: '(empty response body)' }
+    }
+
+    if (!res.ok) {
+      // próbáljunk értelmes hibát adni
+      const msg =
+        (payload && (payload.error || payload.message || payload.text)) ||
+        `HTTP ${res.status}`
+      throw new Error(msg)
+    }
+
+    return payload
+  }
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setMsg(null)
     setLoading(true)
 
     const form = new FormData(e.currentTarget)
-    const email = String(form.get('email') || '')
-    const wallet = String(form.get('wallet') || '')
+    const email = String(form.get('email') || '').trim()
+    const wallet = String(form.get('wallet') || '').trim()
 
     try {
-      const r = await fetch('/api/wl', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, wallet }),
-      })
-      const json = await r.json()
-
-      if (!r.ok) throw new Error(json?.error || 'Unknown error')
+      const json = await applyForWl(email, wallet)
 
       // visszajelzés a felhasználónak a státuszról
       if (json.status === 'wl') {
@@ -302,12 +333,86 @@ function MintSection({
       }
       setWlOpen(false)
     } catch (err: any) {
-      setMsg(err.message || 'Submission failed')
+      setMsg(err?.message || 'Submission failed')
     } finally {
       setLoading(false)
     }
   }
 
+  return (
+    <section id="mint" className="relative border-t border-white/10">
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="grid md:grid-cols-12 gap-10 items-center">
+          <div className="md:col-span-7">
+            <h2 className="text-2xl md:text-3xl font-semibold">Mint</h2>
+            <p className="mt-4 text-white/80">
+              Whitelist price: <strong>0.25 SOL</strong> • Public price: <strong>0.50 SOL</strong>
+            </p>
+            <p className="mt-2 text-white/70">
+              Starts in: <span className="font-mono text-white">{countdown}</span>
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <button
+                disabled
+                className="px-5 py-3 rounded-xl bg-white/10 text-white/80 border border-white/20 cursor-not-allowed"
+              >
+                Connect Wallet (soon)
+              </button>
+              <button
+                disabled
+                className="px-5 py-3 rounded-xl bg-white text-black font-medium opacity-70 cursor-not-allowed"
+              >
+                Mint (soon)
+              </button>
+              <a href="#faq" className="px-5 py-3 rounded-xl border border-white/20 hover:border-white/40">
+                How it works
+              </a>
+            </div>
+          </div>
+
+          <div className="md:col-span-5">
+            <div className="rounded-2xl border border-white/10 p-5 bg-white/5">
+              <h3 className="font-semibold">Whitelist</h3>
+              <p className="mt-2 text-white/80">
+                Join the WL for early access and a discounted mint. (500 WL cap, others to waitlist)
+              </p>
+
+              {wlOpen ? (
+                <form onSubmit={onSubmit} className="mt-4 grid gap-3">
+                  <input
+                    required
+                    name="email"
+                    type="email"
+                    placeholder="Your email"
+                    className="px-4 py-3 rounded-xl bg-black border border-white/20 focus:outline-none focus:border-white/40"
+                  />
+                  <input
+                    name="wallet"
+                    type="text"
+                    placeholder="Solana wallet (optional)"
+                    className="px-4 py-3 rounded-xl bg-black border border-white/20 focus:outline-none focus:border-white/40"
+                  />
+                  <button
+                    disabled={loading}
+                    className="px-5 py-3 rounded-xl bg-white text-black font-medium disabled:opacity-60"
+                  >
+                    {loading ? 'Submitting…' : 'Apply for WL'}
+                  </button>
+                  <p className="text-xs text-white/60">By submitting, you consent to WL-only contact.</p>
+                  {msg && <div className="text-sm text-white/80">{msg}</div>}
+                </form>
+              ) : (
+                <div className="mt-4 text-sm text-white/80">
+                  {msg || 'Thank you! We’ll notify you about your WL status soon.'}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
   return (
     <section id="mint" className="relative border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 py-16">
