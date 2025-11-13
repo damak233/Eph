@@ -258,27 +258,23 @@ function Concept() {
     </section>
   );
 }
-
-// ---- Mint ---------------------------------------------------
+// ---- Mint (WL nélkül, tiszta verzió) ----------------------
 function MintSection({ countdown }: { countdown: string }) {
   return (
     <section id="mint" className="relative border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid md:grid-cols-12 gap-10 items-center">
+          
           <div className="md:col-span-7">
             <h2 className="text-2xl md:text-3xl font-semibold">Mint</h2>
             <p className="mt-4 text-white/80">
-              Whitelist price: <strong>0.25 SOL</strong> • Public price:{" "}
-              <strong>0.50 SOL</strong>
+              Whitelist price: <strong>0.25 SOL</strong> • Public price: <strong>0.50 SOL</strong>
             </p>
             <p className="mt-2 text-white/70">
               Starts in:{" "}
               <span className="font-mono text-white">{countdown}</span>
             </p>
-            <p className="mt-4 text-white/70">
-              Whitelist spots will be allocated through partners, X (Twitter)
-              campaigns, and community collabs — no on-site registration.
-            </p>
+
             <div className="mt-6 flex flex-wrap gap-3">
               <button
                 disabled
@@ -286,12 +282,14 @@ function MintSection({ countdown }: { countdown: string }) {
               >
                 Connect Wallet (soon)
               </button>
+
               <button
                 disabled
                 className="px-5 py-3 rounded-xl bg-white text-black font-medium opacity-70 cursor-not-allowed"
               >
                 Mint (soon)
               </button>
+
               <a
                 href="#faq"
                 className="px-5 py-3 rounded-xl border border-white/20 hover:border-white/40"
@@ -303,35 +301,22 @@ function MintSection({ countdown }: { countdown: string }) {
 
           <div className="md:col-span-5">
             <div className="rounded-2xl border border-white/10 p-5 bg-white/5">
-              <h3 className="font-semibold">Whitelist & access</h3>
+              <h3 className="font-semibold">Mint info</h3>
               <p className="mt-2 text-white/80">
-                There is no email signup on the website. WL spots are distributed
-                via:
+                10,100 NFTs — including 100 Eternal pieces (Save the Children UK partnership).
               </p>
-              <ul className="mt-3 text-white/80 text-sm space-y-1">
-                <li>• X (Twitter) giveaways & raffles</li>
-                <li>• Influencer & alpha group collabs</li>
-                <li>• Community supporters & art collectors</li>
-              </ul>
-              <p className="mt-4 text-white/70 text-sm">
-                Follow{" "}
-                <a
-                  href="https://x.com/EphemeralArtCo"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="underline"
-                >
-                  @EphemeralArtCo
-                </a>{" "}
-                on X for WL announcements.
+              <p className="mt-2 text-white/60 text-sm">
+                WL is handled privately. Influencers receive WL allocations directly.
               </p>
             </div>
           </div>
+
         </div>
       </div>
     </section>
   );
 }
+  
   return (
     <section id="mint" className="relative border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 py-16">
