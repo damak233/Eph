@@ -33,6 +33,9 @@ const LINKS = {
   TENSOR: "#",
 };
 
+const DONATION_POLICY =
+  "A UK-based children’s charity — 10% of all primary sales, converted to fiat and sent via bank transfer.";
+
 // ---- Page root ---------------------------------------------
 
 export default function Home() {
@@ -51,9 +54,6 @@ export default function Home() {
   const diff = MINT_DATE.getTime() - now;
   const countdown = diff > 0 ? formatDuration(diff) : "Live now";
 
-  const DONATION_POLICY =
-    "Save the Children UK — 10% of all primary sales, converted to fiat and sent via bank transfer.";
-
   return (
     <div className="min-h-screen bg-black text-white">
       <SEO
@@ -62,7 +62,7 @@ export default function Home() {
           SUPPLY_TOTAL
         )} NFTs on Solana: ${numberFmt(
           SUPPLY_EPHEMERAL
-        )} Ephemeral + ${SUPPLY_ETERNAL} Eternal (with Save the Children UK).`}
+        )} Ephemeral + ${SUPPLY_ETERNAL} Eternal (with a UK-based children’s charity).`}
         url={URL}
         image={OG}
       />
@@ -190,8 +190,8 @@ function Hero({ countdown }: { countdown: string }) {
         <p className="mt-6 max-w-2xl text-white/80 text-sm md:text-base">
           Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a
           single white quote as a memory. {numberFmt(SUPPLY_TOTAL)} pieces;{" "}
-          {SUPPLY_ETERNAL} Eternal remain visible forever with a discreet Save
-          the Children logo. {FOUNDER_RESERVED} Eternal is reserved as the
+          {SUPPLY_ETERNAL} Eternal remain visible forever with a discreet logo
+          of a children’s charity. {FOUNDER_RESERVED} Eternal is reserved as the
           Founder NFT.
         </p>
 
@@ -238,8 +238,8 @@ function Concept() {
           <p className="mt-4 text-white/80">
             Ephemeral NFTs fade to a black canvas with a short white quote after
             24 hours. The <strong>{SUPPLY_ETERNAL}</strong> Eternal pieces stay
-            visible forever and include a discreet Save the Children logo in the
-            corner.
+            visible forever and include a discreet logo of a children’s charity
+            in the corner.
           </p>
           <ul className="mt-6 space-y-2 text-white/80 text-sm md:text-base">
             <li>
@@ -337,15 +337,17 @@ function Roadmap() {
     {
       title: "Phase I – Creation",
       detail:
-        "Artwork, metadata, IPFS upload, Save the Children UK brand approval.",
+        "Artwork, metadata, IPFS upload, brand review by a UK-based children’s charity.",
     },
     {
       title: "Phase II – Launch",
-      detail: "Mint on Solana (Candy Machine v3), listing on Magic Eden & Tensor.",
+      detail:
+        "Mint on Solana (Candy Machine v3), listing on Magic Eden & Tensor.",
     },
     {
       title: "Phase III – Donation",
-      detail: "10% of primary sales donated monthly to Save the Children UK.",
+      detail:
+        "10% of primary sales donated monthly to a UK-based children’s charity.",
     },
     {
       title: "Phase IV – Secondary",
@@ -387,10 +389,10 @@ function Charity({ policy }: { policy: string }) {
       <div className="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-12 gap-10 items-center">
         <div className="md:col-span-7">
           <h2 className="text-2xl md:text-3xl font-semibold">
-            Charity — Save the Children UK
+            Charity — a UK-based children’s charity
           </h2>
           <p className="mt-4 text-white/80">
-            We are in official partnership with Save the Children UK.{" "}
+            We are working with a UK-based children’s charity.{" "}
             <strong>10% of all primary sales</strong> are donated monthly. Funds
             are first received in crypto, then converted to fiat and sent via
             bank transfer according to their requirements.
@@ -409,7 +411,8 @@ function Charity({ policy }: { policy: string }) {
             <div className="text-center text-white/80">
               <div className="text-6xl">❤</div>
               <div className="mt-3 text-sm">
-                Eternal {SUPPLY_ETERNAL} — includes Save the Children logo
+                Eternal {SUPPLY_ETERNAL} — includes the logo of a children’s
+                charity
               </div>
             </div>
           </div>
@@ -480,7 +483,7 @@ function FAQ({ magicEden, tensor }: { magicEden: string; tensor: string }) {
       q: "How many pieces are there?",
       a: `${numberFmt(SUPPLY_TOTAL)} total — ${numberFmt(
         SUPPLY_EPHEMERAL
-      )} Ephemeral + ${SUPPLY_ETERNAL} Eternal (Save the Children). ${FOUNDER_RESERVED} Eternal is reserved as the Founder NFT.`,
+      )} Ephemeral + ${SUPPLY_ETERNAL} Eternal (for a children’s charity). ${FOUNDER_RESERVED} Eternal is reserved as the Founder NFT.`,
     },
     {
       q: "Where is the secondary market?",
@@ -488,7 +491,7 @@ function FAQ({ magicEden, tensor }: { magicEden: string; tensor: string }) {
     },
     {
       q: "How are donations handled?",
-      a: "10% of primary sales are donated monthly to Save the Children UK. Funds are first collected in crypto, then converted and sent via bank transfer.",
+      a: "10% of primary sales are donated monthly to a UK-based children’s charity. Funds are first collected in crypto, then converted and sent via bank transfer.",
     },
     {
       q: "Which wallets are supported?",
@@ -580,15 +583,4 @@ function Footer(props: {
             Magic Eden
           </a>
           <a
-            href={props.tensor}
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-white"
-          >
-            Tensor
-          </a>
-        </div>
-      </div>
-    </footer>
-  );
-}
+            href={props.tenso
