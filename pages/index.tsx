@@ -67,8 +67,6 @@ export default function Home() {
         <Concept />
         <MintSection
           countdown={countdown}
-          wlOpen={wlOpen}
-          setWlOpen={setWlOpen}
         />
         <Roadmap />
         <Charity policy={DONATION_POLICY} />
