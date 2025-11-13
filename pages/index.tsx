@@ -151,98 +151,65 @@ function Header() {
 // ------------------------------------------------------------
 // Hero (WITH YOUR HERO.WEBP IMAGE)
 // ------------------------------------------------------------
-function HeroSection() {
+// HERO SECTION
+const HeroSection = ({ countdown }: { countdown: string }) => {
   return (
     <section
       id="hero"
-      className="relative w-full h-[85vh] md:h-[100vh] overflow-hidden"
+      className="relative h-screen w-full bg-black text-white flex items-center"
     >
       {/* Background image */}
-      <Image
-        src="/images/Hero.webp"
-        alt="Ephemeral Hero"
-        fill
-        priority
-        className="object-cover"
-      />
+      <div className="absolute inset-0">
+        <img
+          src="/images/Hero.webp"
+          alt="Hero"
+          className="w-full h-full object-cover opacity-70"
+        />
+      </div>
 
-      {/* Overlay – stronger on desktop for readability */}
-      <div className="absolute inset-0 bg-black/40 md:bg-black/50"></div>
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/40" />
 
       {/* Content */}
-      <div
-        className="
-          relative z-10 text-white
-          max-w-4xl
-          px-6 md:px-20
-          flex flex-col
-          justify-center
-          h-full
-        "
-      >
-        <h1
-          className="
-            text-3xl 
-            md:text-6xl 
-            font-bold 
-            leading-tight 
-            drop-shadow-lg
-          "
-        >
-          The art of fading, <br />
+      <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-8">
+        <p className="text-sm tracking-widest mb-4 opacity-80">
+          SOLANA • ART • CHARITY
+        </p>
+
+        <h1 className="text-3xl md:text-6xl font-bold leading-tight">
+          The art of fading,<br />
           the beauty of what remains.
         </h1>
 
-        <p
-          className="
-            mt-4 
-            text-base 
-            md:text-2xl 
-            max-w-2xl 
-            drop-shadow
-          "
-        >
-          Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a single white quote 
-          as a memory. 10,100 pieces; 100 eternal remain visible forever.
+        <p className="mt-6 max-w-xl text-base md:text-lg opacity-90">
+          Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a single
+          white quote as a memory. 10,100 pieces; 100 eternal remain visible forever.
         </p>
 
         {/* Buttons */}
-        <div className="mt-8 flex gap-4">
-          <button
-            className="
-              px-6 py-3 rounded-md 
-              bg-white/20 backdrop-blur 
-              border border-white/30 
-              text-white
-              text-sm md:text-base
-            "
-          >
-            Mint – coming soon
+        <div className="flex items-center gap-4 mt-8">
+          <button className="px-6 py-3 rounded bg-white text-black font-medium cursor-not-allowed opacity-60">
+            Mint — coming soon
           </button>
 
           <a
-            href="https://x.com/..."
+            href="https://x.com/YOUR_USERNAME"
             target="_blank"
-            className="
-              px-6 py-3 rounded-md 
-              bg-white/10 backdrop-blur 
-              border border-white/20 
-              text-white
-              text-sm md:text-base
-            "
+            rel="noopener noreferrer"
+            className="px-6 py-3 rounded border border-white/50 text-white hover:bg-white/10 transition"
           >
             Follow on X
           </a>
         </div>
 
         {/* Countdown */}
-        <p className="mt-6 text-sm md:text-lg opacity-90">
-          Countdown to mint: <span className="font-medium">{countdown}</span>
+        <p className="mt-6 text-sm opacity-80">
+          Countdown to mint: <span className="font-semibold">{countdown}</span>
         </p>
       </div>
     </section>
   );
-}
+};
 
 // ------------------------------------------------------------
 // Concept
