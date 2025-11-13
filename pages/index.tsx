@@ -592,19 +592,38 @@ function PreviewArtwork() {
   const [expired, setExpired] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setExpired(true), 3000);
+    const t = setTimeout(() => setExpired(true), 3000); // 3 sec demo fade
     return () => clearTimeout(t);
   }, []);
 
   return (
     <div className="w-full h-full relative overflow-hidden">
+      
+      {/* Original artwork image */}
       <div
-        className={`absolute inset-0 transition-opacity duration-700 ${
+        className={`absolute inset-0 transition-opacity duration-[2000ms] ${
           expired ? "opacity-0" : "opacity-100"
         }`}
       >
-        {/* Here you can insert a preview image */}
+        <Image
+          src="/images/gallery/Ephemeral-01.webp"
+          alt="Preview artwork"
+          fill
+          style={{ objectFit: "cover" }}
+        />
       </div>
+
+      {/* Faded black with quote */}
+      <div
+        className={`absolute inset-0 bg-black flex items-center justify-center transition-opacity duration-[2000ms] ${
+          expired ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <p className="text-white text-center px-6 italic text-sm">
+          “Everything fades. What remains is the meaning we give it.”
+        </p>
+      </div>
+
     </div>
   );
 }
