@@ -33,9 +33,6 @@ const LINKS = {
   TENSOR: "#",
 };
 
-const DONATION_POLICY =
-  "A UK-based children’s charity — 10% of all primary sales, converted to fiat and sent via bank transfer.";
-
 // ---- Page root ---------------------------------------------
 
 export default function Home() {
@@ -54,6 +51,9 @@ export default function Home() {
   const diff = MINT_DATE.getTime() - now;
   const countdown = diff > 0 ? formatDuration(diff) : "Live now";
 
+  const DONATION_POLICY =
+    "Monthly transfer – 10% of primary sales donated to a children’s charity.";
+
   return (
     <div className="min-h-screen bg-black text-white">
       <SEO
@@ -62,7 +62,7 @@ export default function Home() {
           SUPPLY_TOTAL
         )} NFTs on Solana: ${numberFmt(
           SUPPLY_EPHEMERAL
-        )} Ephemeral + ${SUPPLY_ETERNAL} Eternal (with a UK-based children’s charity).`}
+        )} Ephemeral + ${SUPPLY_ETERNAL} Eternal (with a children’s charity partner).`}
         url={URL}
         image={OG}
       />
@@ -77,7 +77,6 @@ export default function Home() {
         <Charity policy={DONATION_POLICY} />
         <Gallery />
         <FAQ magicEden={LINKS.MAGIC_EDEN} tensor={LINKS.TENSOR} />
-        <PressKit />
       </main>
 
       <Footer
@@ -102,7 +101,6 @@ function Header() {
     ["#charity", "Charity"],
     ["#gallery", "Gallery"],
     ["#faq", "FAQ"],
-    ["#press", "Press"],
   ];
 
   return (
@@ -190,9 +188,9 @@ function Hero({ countdown }: { countdown: string }) {
         <p className="mt-6 max-w-2xl text-white/80 text-sm md:text-base">
           Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a
           single white quote as a memory. {numberFmt(SUPPLY_TOTAL)} pieces;{" "}
-          {SUPPLY_ETERNAL} Eternal remain visible forever with a discreet logo
-          of a children’s charity. {FOUNDER_RESERVED} Eternal is reserved as the
-          Founder NFT.
+          {SUPPLY_ETERNAL} Eternal remain visible forever, with a discreet
+          charity logo. {FOUNDER_RESERVED} Eternal is reserved as the Founder
+          NFT.
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -238,8 +236,8 @@ function Concept() {
           <p className="mt-4 text-white/80">
             Ephemeral NFTs fade to a black canvas with a short white quote after
             24 hours. The <strong>{SUPPLY_ETERNAL}</strong> Eternal pieces stay
-            visible forever and include a discreet logo of a children’s charity
-            in the corner.
+            visible forever and include a discreet children’s charity logo in
+            the corner.
           </p>
           <ul className="mt-6 space-y-2 text-white/80 text-sm md:text-base">
             <li>
@@ -337,7 +335,7 @@ function Roadmap() {
     {
       title: "Phase I – Creation",
       detail:
-        "Artwork, metadata, IPFS upload, brand review by a UK-based children’s charity.",
+        "Artwork, metadata, IPFS upload, children’s charity partner brand approval.",
     },
     {
       title: "Phase II – Launch",
@@ -347,7 +345,7 @@ function Roadmap() {
     {
       title: "Phase III – Donation",
       detail:
-        "10% of primary sales donated monthly to a UK-based children’s charity.",
+        "10% of primary sales donated monthly to a children’s charity partner.",
     },
     {
       title: "Phase IV – Secondary",
@@ -389,13 +387,14 @@ function Charity({ policy }: { policy: string }) {
       <div className="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-12 gap-10 items-center">
         <div className="md:col-span-7">
           <h2 className="text-2xl md:text-3xl font-semibold">
-            Charity — a UK-based children’s charity
+            Charity — supporting children in need
           </h2>
           <p className="mt-4 text-white/80">
-            We are working with a UK-based children’s charity.{" "}
-            <strong>10% of all primary sales</strong> are donated monthly. Funds
+            We are committed to donating{" "}
+            <strong>10% of all primary sales</strong> to a children’s charity,
+            via monthly bank transfers, with a transparent public summary. Funds
             are first received in crypto, then converted to fiat and sent via
-            bank transfer according to their requirements.
+            bank transfer according to the charity’s requirements.
           </p>
           <div className="mt-6 rounded-xl bg-white/5 border border-white/10 p-4">
             <div className="text-white/70 text-sm">
@@ -411,8 +410,8 @@ function Charity({ policy }: { policy: string }) {
             <div className="text-center text-white/80">
               <div className="text-6xl">❤</div>
               <div className="mt-3 text-sm">
-                Eternal {SUPPLY_ETERNAL} — includes the logo of a children’s
-                charity
+                Eternal {SUPPLY_ETERNAL} — includes a discreet children’s
+                charity logo
               </div>
             </div>
           </div>
@@ -483,7 +482,9 @@ function FAQ({ magicEden, tensor }: { magicEden: string; tensor: string }) {
       q: "How many pieces are there?",
       a: `${numberFmt(SUPPLY_TOTAL)} total — ${numberFmt(
         SUPPLY_EPHEMERAL
-      )} Ephemeral + ${SUPPLY_ETERNAL} Eternal (for a children’s charity). ${FOUNDER_RESERVED} Eternal is reserved as the Founder NFT.`,
+      )} Ephemeral + ${SUPPLY_ETERNAL} Eternal (with a children’s charity logo). ${
+        FOUNDER_RESERVED
+      } Eternal is reserved as the Founder NFT.`,
     },
     {
       q: "Where is the secondary market?",
@@ -491,7 +492,7 @@ function FAQ({ magicEden, tensor }: { magicEden: string; tensor: string }) {
     },
     {
       q: "How are donations handled?",
-      a: "10% of primary sales are donated monthly to a UK-based children’s charity. Funds are first collected in crypto, then converted and sent via bank transfer.",
+      a: "10% of primary sales are donated monthly via bank transfer to a children’s charity, with public on-chain tracking.",
     },
     {
       q: "Which wallets are supported?",
@@ -523,23 +524,6 @@ function FAQ({ magicEden, tensor }: { magicEden: string; tensor: string }) {
   );
 }
 
-// ---- Press kit ---------------------------------------------
-
-function PressKit() {
-  return (
-    <section id="press" className="relative border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-2xl md:text-3xl font-semibold">Press kit</h2>
-        <p className="mt-4 text-white/80 text-sm md:text-base max-w-2xl">
-          Looking to feature Ephemeral Moments? Get in touch for high-resolution
-          artwork, founder background and charity documentation. Press kit
-          download and contact details will be published closer to mint.
-        </p>
-      </div>
-    </section>
-  );
-}
-
 // ---- Footer ------------------------------------------------
 
 function Footer(props: {
@@ -555,6 +539,12 @@ function Footer(props: {
           <div className="font-semibold text-white">Ephemeral Moments</div>
           <div className="mt-1">
             {new Date().getFullYear()} • Solana • Art • Charity
+          </div>
+          <div className="mt-1">
+            Supporting children in need through a dedicated children’s charity.
+          </div>
+          <div className="mt-1">
+            10% of primary sales donated monthly to a children’s charity.
           </div>
         </div>
         <div className="flex flex-wrap gap-4">
