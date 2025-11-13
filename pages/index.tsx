@@ -43,7 +43,6 @@ export default function Home() {
   }, []);
   const countdown = formatDuration(MINT_DATE.getTime() - now);
 
-  const [wlOpen, setWlOpen] = useState(true);
   const DONATION_POLICY =
     "Save the Children UK — monthly transfer (10% of primary sales)";
 
