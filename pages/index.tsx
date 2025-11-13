@@ -151,67 +151,94 @@ function Header() {
 // ------------------------------------------------------------
 // Hero (WITH YOUR HERO.WEBP IMAGE)
 // ------------------------------------------------------------
-function Hero({ countdown }: { countdown: string }) {
-  const ORIGIN = "https://ephemeralmoments.org";
-  const BUST = "?v=2";
-
-  const REL = "/images/Hero.webp" + BUST;
-  const ABS = ORIGIN + "/images/Hero.webp" + BUST;
-
+function HeroSection() {
   return (
     <section
-      id="home"
-      className="relative overflow-hidden min-h-[calc(100vh-64px)]"
-      style={{
-        backgroundImage: `url(${REL}), url(${ABS})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center 84%",
-        backgroundRepeat: "no-repeat",
-      }}
+      id="hero"
+      className="relative w-full h-[85vh] md:h-[100vh] overflow-hidden"
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/60" />
+      {/* Background image */}
+      <Image
+        src="/images/Hero.webp"
+        alt="Ephemeral Hero"
+        fill
+        priority
+        className="object-cover"
+      />
 
-      <div className="relative max-w-7xl mx-auto px-4 py-20 text-white">
-        <p className="uppercase tracking-[0.25em] text-xs text-white/70">
-          Solana • Art • Charity
-        </p>
+      {/* Overlay – stronger on desktop for readability */}
+      <div className="absolute inset-0 bg-black/40 md:bg-black/50"></div>
 
-        <h1 className="mt-4 text-4xl md:text-6xl font-semibold">
-          The art of{" "}
-          <span className="underline decoration-white/30 underline-offset-8">
-            fading
-          </span>
-          ,<br />
+      {/* Content */}
+      <div
+        className="
+          relative z-10 text-white
+          max-w-4xl
+          px-6 md:px-20
+          flex flex-col
+          justify-center
+          h-full
+        "
+      >
+        <h1
+          className="
+            text-3xl 
+            md:text-6xl 
+            font-bold 
+            leading-tight 
+            drop-shadow-lg
+          "
+        >
+          The art of fading, <br />
           the beauty of what remains.
         </h1>
 
-        <p className="mt-6 max-w-2xl text-white/80">
-          Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a
-          single white quote as a memory. {SUPPLY_TOTAL} pieces; {SUPPLY_ETERNAL}{" "}
-          eternal remain visible forever.
+        <p
+          className="
+            mt-4 
+            text-base 
+            md:text-2xl 
+            max-w-2xl 
+            drop-shadow
+          "
+        >
+          Monochrome, sumi-e inspired NFTs that fade after 24 hours — leaving a single white quote 
+          as a memory. 10,100 pieces; 100 eternal remain visible forever.
         </p>
 
-        <div className="mt-8 flex flex-col sm:flex-row gap-3">
-          <a
-            href="#mint"
-            className="px-6 py-3 rounded-xl bg-white text-black font-medium hover:bg-white/80"
+        {/* Buttons */}
+        <div className="mt-8 flex gap-4">
+          <button
+            className="
+              px-6 py-3 rounded-md 
+              bg-white/20 backdrop-blur 
+              border border-white/30 
+              text-white
+              text-sm md:text-base
+            "
           >
             Mint – coming soon
-          </a>
+          </button>
 
           <a
-            href="https://x.com/EphemeralArtCo"
+            href="https://x.com/..."
             target="_blank"
-            className="px-6 py-3 rounded-xl border border-white/20 hover:border-white/40"
+            className="
+              px-6 py-3 rounded-md 
+              bg-white/10 backdrop-blur 
+              border border-white/20 
+              text-white
+              text-sm md:text-base
+            "
           >
             Follow on X
           </a>
         </div>
 
-        <div className="mt-6 text-sm text-white/70">
-          Countdown to mint:{" "}
-          <span className="font-mono text-white">{countdown}</span>
-        </div>
+        {/* Countdown */}
+        <p className="mt-6 text-sm md:text-lg opacity-90">
+          Countdown to mint: <span className="font-medium">{countdown}</span>
+        </p>
       </div>
     </section>
   );
