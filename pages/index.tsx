@@ -583,4 +583,15 @@ function Footer(props: {
             Magic Eden
           </a>
           <a
-            href={props.tenso
+            href={props.tensor}
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-white"
+          >
+            Tensor
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
+}
