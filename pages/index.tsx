@@ -261,84 +261,78 @@ function Concept() {
 }
 
 // ---- Mint ---------------------------------------------------
-function MintSection({
-  countdown,
-  wlOpen,
-  setWlOpen,
-}: {
-  countdown: string
-  wlOpen: boolean
-  setWlOpen: (b: boolean) => void
-}) {
-  const [loading, setLoading] = React.useState(false)
-  const [msg, setMsg] = React.useState<string | null>(null)
+function MintSection({ countdown }: { countdown: string }) {
+  return (
+    <section id="mint" className="relative border-t border-white/10">
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="grid md:grid-cols-12 gap-10 items-center">
+          <div className="md:col-span-7">
+            <h2 className="text-2xl md:text-3xl font-semibold">Mint</h2>
+            <p className="mt-4 text-white/80">
+              Whitelist price: <strong>0.25 SOL</strong> • Public price:{" "}
+              <strong>0.50 SOL</strong>
+            </p>
+            <p className="mt-2 text-white/70">
+              Starts in:{" "}
+              <span className="font-mono text-white">{countdown}</span>
+            </p>
+            <p className="mt-4 text-white/70">
+              Whitelist spots will be allocated through partners, X (Twitter)
+              campaigns, and community collabs — no on-site registration.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <button
+                disabled
+                className="px-5 py-3 rounded-xl bg-white/10 text-white/80 border border-white/20 cursor-not-allowed"
+              >
+                Connect Wallet (soon)
+              </button>
+              <button
+                disabled
+                className="px-5 py-3 rounded-xl bg-white text-black font-medium opacity-70 cursor-not-allowed"
+              >
+                Mint (soon)
+              </button>
+              <a
+                href="#faq"
+                className="px-5 py-3 rounded-xl border border-white/20 hover:border-white/40"
+              >
+                How it works
+              </a>
+            </div>
+          </div>
 
-  /**
-   * Beküldés csak EGYSZER olvassa a választ.
-   * Ha az API JSON-t ad, json-ként olvassuk.
-   * Ha nem (pl. üres body/hard 500), akkor szövegként–>diagnosztika.
-   */
-  async function applyForWl(email: string, wallet: string) {
-    const res = await fetch('/api/wl', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, wallet }),
-    })
-
-    const contentType = res.headers.get('content-type') || ''
-    let payload: any = null
-
-    try {
-      if (contentType.includes('application/json')) {
-        payload = await res.json()               // <= CSAK EGYSZER!
-      } else {
-        const text = await res.text()            // nem JSON válasz
-        payload = { ok: res.ok, status: res.status, text }
-      }
-    } catch {
-      // pl. teljesen üres body esetén
-      payload = { ok: res.ok, status: res.status, text: '(empty response body)' }
-    }
-
-    if (!res.ok) {
-      // próbáljunk értelmes hibát adni
-      const msg =
-        (payload && (payload.error || payload.message || payload.text)) ||
-        `HTTP ${res.status}`
-      throw new Error(msg)
-    }
-
-    return payload
-  }
-
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setMsg(null)
-    setLoading(true)
-
-    const form = new FormData(e.currentTarget)
-    const email = String(form.get('email') || '').trim()
-    const wallet = String(form.get('wallet') || '').trim()
-
-    try {
-      const json = await applyForWl(email, wallet)
-
-      // visszajelzés a felhasználónak a státuszról
-      if (json.status === 'wl') {
-        setMsg('You are on the WL! 🎉 We will contact you before mint.')
-      } else if (json.status === 'waitlist') {
-        setMsg('WL is full. You are on the waitlist — we will notify you if a spot opens.')
-      } else {
-        setMsg('Submitted. We will email you about your status.')
-      }
-      setWlOpen(false)
-    } catch (err: any) {
-      setMsg(err?.message || 'Submission failed')
-    } finally {
-      setLoading(false)
-    }
-  }
-
+          <div className="md:col-span-5">
+            <div className="rounded-2xl border border-white/10 p-5 bg-white/5">
+              <h3 className="font-semibold">Whitelist & access</h3>
+              <p className="mt-2 text-white/80">
+                There is no email signup on the website. WL spots are distributed
+                via:
+              </p>
+              <ul className="mt-3 text-white/80 text-sm space-y-1">
+                <li>• X (Twitter) giveaways & raffles</li>
+                <li>• Influencer & alpha group collabs</li>
+                <li>• Community supporters & art collectors</li>
+              </ul>
+              <p className="mt-4 text-white/70 text-sm">
+                Follow{" "}
+                <a
+                  href="https://x.com/EphemeralArtCo"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  @EphemeralArtCo
+                </a>{" "}
+                on X for WL announcements.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
   return (
     <section id="mint" className="relative border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 py-16">
