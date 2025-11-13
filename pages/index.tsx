@@ -256,18 +256,21 @@ function Concept() {
     </section>
   );
 }
-// ---- Mint (WL nélkül, tiszta verzió) ----------------------
+// ---- Mint ---------------------------------------------------
 function MintSection({ countdown }: { countdown: string }) {
   return (
     <section id="mint" className="relative border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid md:grid-cols-12 gap-10 items-center">
-          
+
+          {/* Left side */}
           <div className="md:col-span-7">
             <h2 className="text-2xl md:text-3xl font-semibold">Mint</h2>
+
             <p className="mt-4 text-white/80">
               Whitelist price: <strong>0.25 SOL</strong> • Public price: <strong>0.50 SOL</strong>
             </p>
+
             <p className="mt-2 text-white/70">
               Starts in:{" "}
               <span className="font-mono text-white">{countdown}</span>
@@ -297,14 +300,18 @@ function MintSection({ countdown }: { countdown: string }) {
             </div>
           </div>
 
+          {/* Right side */}
           <div className="md:col-span-5">
             <div className="rounded-2xl border border-white/10 p-5 bg-white/5">
-              <h3 className="font-semibold">Mint info</h3>
+              <h3 className="font-semibold">Whitelist</h3>
+
               <p className="mt-2 text-white/80">
-                10,100 NFTs — including 100 Eternal pieces (Save the Children UK partnership).
+                WL is handled privately through partners and ambassadors.
+                No public application is available.
               </p>
+
               <p className="mt-2 text-white/60 text-sm">
-                WL is handled privately. Influencers receive WL allocations directly.
+                If you received a WL invitation, you will be contacted directly.
               </p>
             </div>
           </div>
@@ -314,7 +321,6 @@ function MintSection({ countdown }: { countdown: string }) {
     </section>
   );
 }
-  
   return (
     <section id="mint" className="relative border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 py-16">
