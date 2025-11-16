@@ -256,12 +256,31 @@ function Concept() {
 
 
 function PreviewArtwork() {
-  // egyszerű, stabil kép – ne animáljunk, hogy biztosan megjelenjen
+  const [faded, setFaded] = useState(false);
+
+  useEffect(() => {
+    // hány másodperc után váltson át og.jpg-re (most 5 mp)
+    const timer = setTimeout(() => {
+      setFaded(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const src = faded
+    ? "/og.jpg" // fekete kép fehér szöveggel
+    : "/images/gallery/Ephemeral-01.webp"; // eredeti színes preview
+
+  const alt = faded
+    ? "Ephemeral Moments – faded state"
+    : "Ephemeral Moments preview";
+
   return (
     <div className="relative w-full h-full">
       <Image
-        src="/images/gallery/Ephemeral-01.webp"
-        alt="Ephemeral Moments preview"
+        key={src} // biztos csere a két kép között
+        src={src}
+        alt={alt}
         fill
         sizes="(max-width: 768px) 100vw, 50vw"
         style={{ objectFit: "cover" }}
