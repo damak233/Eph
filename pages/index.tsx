@@ -36,11 +36,11 @@ const LINKS = {
 // ---- Page root ---------------------------------------------
 
 export default function Home() {
-  // fix launch date or "14 days from now"
-  const MINT_DATE = useMemo(
-    () => new Date(Date.now() + 1000 * 60 * 60 * 24 * 14),
-    []
-  );
+  // Fix mint date: Dec 12, 20:00 local (CET ~ UTC+1)
+  const MINT_DATE = useMemo(() => {
+    const year = new Date().getFullYear();
+    return new Date(`${year}-12-12T19:00:00Z`); // 20:00 CET
+  }, []);
 
   const [now, setNow] = useState(Date.now());
   useEffect(() => {
@@ -166,13 +166,13 @@ function Hero({ countdown }: { countdown: string }) {
   return (
     <section
       id="home"
-      className="relative min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] overflow-hidden"
+      className="relative min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] overflow-hidden scroll-mt-[90px]"
       style={{
-  backgroundImage: `url(${REL}), url(${ABS})`,
-  backgroundSize: "cover",
-  backgroundPosition: "center bottom", // <<< gyerekek kerülnek a fókuszba
-  backgroundRepeat: "no-repeat",
-}}
+        backgroundImage: `url(${REL}), url(${ABS})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center bottom",
+        backgroundRepeat: "no-repeat",
+      }}
     >
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/40 to-black/70" />
 
@@ -198,7 +198,7 @@ function Hero({ countdown }: { countdown: string }) {
             href="#mint"
             className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-black font-medium hover:bg-white/90 transition"
           >
-            Mint — coming soon
+            Mint — December 12, 20:00
           </a>
           <a
             href={LINKS.TWITTER}
@@ -211,8 +211,11 @@ function Hero({ countdown }: { countdown: string }) {
         </div>
 
         <div className="mt-6 text-sm text-white/70">
-          Countdown to mint:{" "}
-          <span className="font-mono text-white">{countdown}</span>
+          Mint date: <strong>December 12, 20:00</strong>
+          <span className="ml-2">
+            • Countdown:{" "}
+            <span className="font-mono text-white">{countdown}</span>
+          </span>
         </div>
       </div>
     </section>
@@ -223,7 +226,10 @@ function Hero({ countdown }: { countdown: string }) {
 
 function Concept() {
   return (
-    <section id="concept" className="relative border-t border-white/10">
+    <section
+      id="concept"
+      className="relative border-t border-white/10 scroll-mt-[90px]"
+    >
       <div className="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-12 gap-10 items-center">
         <div className="md:col-span-6">
           <div className="aspect-square rounded-2xl bg-gradient-to-br from-white/10 to-white/5 overflow-hidden">
@@ -254,22 +260,21 @@ function Concept() {
   );
 }
 
-
 function PreviewArtwork() {
   const [faded, setFaded] = useState(false);
 
   useEffect(() => {
-    // hány másodperc után váltson át og.jpg-re (most 5 mp)
+    // hány ms után váltson át og.jpg-re
     const timer = setTimeout(() => {
       setFaded(true);
-    }, 5000);
+    }, 5000); // 5 másodperc demo
 
     return () => clearTimeout(timer);
   }, []);
 
   const src = faded
     ? "/og.jpg" // fekete kép fehér szöveggel
-    : "/images/gallery/Ephemeral-01.webp"; // eredeti színes preview
+    : "/images/gallery/Ephemeral-01.webp"; // eredeti preview
 
   const alt = faded
     ? "Ephemeral Moments – faded state"
@@ -278,7 +283,7 @@ function PreviewArtwork() {
   return (
     <div className="relative w-full h-full">
       <Image
-        key={src} // biztos csere a két kép között
+        key={src}
         src={src}
         alt={alt}
         fill
@@ -289,11 +294,15 @@ function PreviewArtwork() {
     </div>
   );
 }
+
 // ---- Mint ---------------------------------------------------
 
 function MintSection({ countdown }: { countdown: string }) {
   return (
-    <section id="mint" className="relative border-t border-white/10">
+    <section
+      id="mint"
+      className="relative border-t border-white/10 scroll-mt-[90px]"
+    >
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid md:grid-cols-12 gap-10 items-center">
           <div className="md:col-span-7">
@@ -302,7 +311,10 @@ function MintSection({ countdown }: { countdown: string }) {
               Whitelist price: <strong>0.25 SOL</strong> • Public price:{" "}
               <strong>0.50 SOL</strong>
             </p>
-            <p className="mt-2 text-white/70">
+            <p className="mt-2 text-white/80">
+              Mint opens on <strong>December 12, 20:00</strong>.
+            </p>
+            <p className="mt-1 text-white/70">
               Starts in:{" "}
               <span className="font-mono text-white">{countdown}</span>
             </p>
@@ -310,12 +322,14 @@ function MintSection({ countdown }: { countdown: string }) {
               <button
                 disabled
                 className="px-5 py-3 rounded-xl bg-white/10 text-white/80 border border-white/20 cursor-not-allowed"
+                title="Mint opens on December 12, 20:00"
               >
                 Connect Wallet (soon)
               </button>
               <button
                 disabled
                 className="px-5 py-3 rounded-xl bg-white text-black font-medium opacity-70 cursor-not-allowed"
+                title="Mint opens on December 12, 20:00"
               >
                 Mint (soon)
               </button>
@@ -376,7 +390,10 @@ function Roadmap() {
     },
   ];
   return (
-    <section id="roadmap" className="relative border-t border-white/10">
+    <section
+      id="roadmap"
+      className="relative border-t border-white/10 scroll-mt-[90px]"
+    >
       <div className="max-w-7xl mx-auto px-4 py-16">
         <h2 className="text-2xl md:text-3xl font-semibold">Roadmap</h2>
         <ol className="mt-8 grid md:grid-cols-5 gap-5">
@@ -402,7 +419,10 @@ function Roadmap() {
 
 function Charity({ policy }: { policy: string }) {
   return (
-    <section id="charity" className="relative border-t border-white/10">
+    <section
+      id="charity"
+      className="relative border-t border-white/10 scroll-mt-[90px]"
+    >
       <div className="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-12 gap-10 items-center">
         <div className="md:col-span-7">
           <h2 className="text-2xl md:text-3xl font-semibold">
@@ -414,6 +434,10 @@ function Charity({ policy }: { policy: string }) {
             via monthly bank transfers, with a transparent public summary. Funds
             are first received in crypto, then converted to fiat and sent via
             bank transfer according to the charity’s requirements.
+          </p>
+          <p className="mt-3 text-white/60 text-sm">
+            The specific children’s charity partner will be announced once all
+            legal agreements are fully signed.
           </p>
           <div className="mt-6 rounded-xl bg-white/5 border border-white/10 p-4">
             <div className="text-white/70 text-sm">
@@ -456,7 +480,10 @@ function Gallery() {
   ];
 
   return (
-    <section id="gallery" className="relative border-t border-white/10">
+    <section
+      id="gallery"
+      className="relative border-t border-white/10 scroll-mt-[90px]"
+    >
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="flex items-end justify-between gap-4">
           <h2 className="text-2xl md:text-3xl font-semibold">Gallery</h2>
@@ -520,7 +547,10 @@ function FAQ({ magicEden, tensor }: { magicEden: string; tensor: string }) {
   ];
 
   return (
-    <section id="faq" className="relative border-t border-white/10">
+    <section
+      id="faq"
+      className="relative border-t border-white/10 scroll-mt-[90px]"
+    >
       <div className="max-w-7xl mx-auto px-4 py-16">
         <h2 className="text-2xl md:text-3xl font-semibold">FAQ</h2>
         <div className="mt-6 divide-y divide-white/10 border border-white/10 rounded-2xl overflow-hidden">
@@ -563,44 +593,4 @@ function Footer(props: {
             Supporting children in need through a dedicated children’s charity.
           </div>
           <div className="mt-1">
-            10% of primary sales donated monthly to a children’s charity.
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-4">
-          <a
-            href={props.twitter}
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-white"
-          >
-            X (Twitter)
-          </a>
-          <a
-            href={props.discord}
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-white"
-          >
-            Discord
-          </a>
-          <a
-            href={props.magicEden}
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-white"
-          >
-            Magic Eden
-          </a>
-          <a
-            href={props.tensor}
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-white"
-          >
-            Tensor
-          </a>
-        </div>
-      </div>
-    </footer>
-  );
-}
+           
