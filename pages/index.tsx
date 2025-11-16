@@ -168,11 +168,11 @@ function Hero({ countdown }: { countdown: string }) {
       id="home"
       className="relative min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] overflow-hidden"
       style={{
-        backgroundImage: `url(${REL}), url(${ABS})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
+  backgroundImage: `url(${REL}), url(${ABS})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center bottom", // <<< gyerekek kerülnek a fókuszba
+  backgroundRepeat: "no-repeat",
+}}
     >
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/40 to-black/70" />
 
