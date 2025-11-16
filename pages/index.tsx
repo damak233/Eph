@@ -254,6 +254,7 @@ function Concept() {
   );
 }
 
+
 function PreviewArtwork() {
   // egyszerű, stabil kép – ne animáljunk, hogy biztosan megjelenjen
   return (
@@ -269,7 +270,6 @@ function PreviewArtwork() {
     </div>
   );
 }
-
 // ---- Mint ---------------------------------------------------
 
 function MintSection({ countdown }: { countdown: string }) {
