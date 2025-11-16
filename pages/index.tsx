@@ -584,6 +584,7 @@ function Footer(props: {
   return (
     <footer className="border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between text-sm text-white/70">
+        
         <div>
           <div className="font-semibold text-white">Ephemeral Moments</div>
           <div className="mt-1">
@@ -593,4 +594,26 @@ function Footer(props: {
             Supporting children in need through a dedicated children’s charity.
           </div>
           <div className="mt-1">
-           
+            10% of primary sales donated monthly to a children’s charity.
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-4">
+          <a href={props.twitter} target="_blank" rel="noreferrer" className="hover:text-white">
+            X (Twitter)
+          </a>
+          <a href={props.discord} target="_blank" rel="noreferrer" className="hover:text-white">
+            Discord
+          </a>
+          <a href={props.magicEden} target="_blank" rel="noreferrer" className="hover:text-white">
+            Magic Eden
+          </a>
+          <a href={props.tensor} target="_blank" rel="noreferrer" className="hover:text-white">
+            Tensor
+          </a>
+        </div>
+
+      </div>
+    </footer>
+  );
+}
